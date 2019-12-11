@@ -2,17 +2,12 @@
 
 echo "Welcome : To Gambler Simulator "
 
-#constant
-BET=1
-
 #variable
 totalDiff=0
 
 declare -A dictWinLoose
-function gamblePlay()
+function gamblerPlay()
 {
-
-	echo "Days Wins"
 	for (( i=1; i<=30; i++ ))
 	do
 		win=0
@@ -20,7 +15,6 @@ function gamblePlay()
 		stake=100
     	lowerlimit=$(( $stake / 2 ))
 		upperlimit=$(( $stake + $stake / 2 ))
-
 		while (( $lowerlimit < $stake && $upperlimit > $stake ))
 		do
 			result=$((RANDOM%2))
@@ -37,8 +31,18 @@ function gamblePlay()
 		winlooseDifference=$(($win - $loose))
 		totalDiff=$(($totalDiff + $winlooseDifference ))
 		dictWinloose[$i]="$winlooseDifference  $totalDiff"
-	done
 
+	done
+}
+
+function nextMonth()
+{
+	if [ $winlooseDifference -gt 0 ]
+	then
+			main
+	else
+			echo "No Money Left"
+	fi
 }
 
 function luckiest()
@@ -47,7 +51,7 @@ function luckiest()
 	for (( i=1; i<=30; i++ ))
 	do
 			echo "day$i" ${dictWinloose[$i]}
-	done | sort -rn -k3 | head -1
+	done | sort -rn -k3 | head -1 
 }
 
 function unluckiest()
@@ -61,8 +65,10 @@ function unluckiest()
 
 function main()
 {
-gamblePlay
+gamblerPlay
 luckiest
 unluckiest
+nextMonth
 }
+
 main
