@@ -65,5 +65,4 @@ gamblePlay
 luckiest
 unluckiest
 }
-
 main
