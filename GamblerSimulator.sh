@@ -1,4 +1,4 @@
-#!/bin/bash -x
+==#!/bin/bash -x
 
 echo "Welcome : To Gambler Simulator "
 
@@ -6,11 +6,10 @@ echo "Welcome : To Gambler Simulator "
 BET=1
 
 #variable
-totalwin=0
-totalloose=0
+totalDiff=0
 
 declare -A dictWinLoose
-function dailyPlay()
+function gamblePlay()
 {
 
 	echo "Days Wins"
@@ -35,26 +34,36 @@ function dailyPlay()
 			fi
 		done
 
-		totalwin=$win
-		totalloose=$loose
-		difference=$(($win - $loose))
-		dictWinloose[$i]=$difference 
-      if [[ $difference -eq 50 ]]
-      then
-        echo "day$i"  $difference
-      else
-        echo "day$i"  $difference
-      fi
+		winlooseDifference=$(($win - $loose))
+		totalDiff=$(($totalDiff + $winlooseDifference ))
+		dictWinloose[$i]="$winlooseDifference  $totalDiff"
 	done
-
-echo "Total Win" $totalwin
-echo "Total loose" $totalloose
 
 }
 
-main()
+function luckiest()
 {
-dailyPlay
+	echo "luckiest day and amount: "
+	for (( i=1; i<=30; i++ ))
+	do
+			echo "day$i" ${dictWinloose[$i]}
+	done | sort -rn -k3 | head -1
+}
+
+function unluckiest()
+{
+	echo "unluckiest day and amount: "
+	for (( j=1; j<=30; j++ ))
+	do
+		echo "day$j" ${dictWinloose[$j]}
+	done | sort -k3 -n | head -1
+}
+
+function main()
+{
+gamblePlay
+luckiest
+unluckiest
 }
 
 main
