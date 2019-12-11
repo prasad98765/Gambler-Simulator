@@ -1,4 +1,3 @@
-
 #!/bin/bash -x
 
 echo "Welcome : To Gambler Simulator "
@@ -6,21 +5,23 @@ echo "Welcome : To Gambler Simulator "
 #constant
 BET=1
 
-
 #variable
-win=0
-loose=0
+totalwin=0
+totalloose=0
 
 declare -A dictWinLoose
 function dailyPlay()
 {
 
-	echo "Days Wins Loose amount"
-	for (( i=1; i<=20; i++ ))
+	echo "Days Wins"
+	for (( i=1; i<=30; i++ ))
 	do
+		win=0
+		loose=0
 		stake=100
-		lowerlimit=$(( $stake / 2 ))
+    	lowerlimit=$(( $stake / 2 ))
 		upperlimit=$(( $stake + $stake / 2 ))
+
 		while (( $lowerlimit < $stake && $upperlimit > $stake ))
 		do
 			result=$((RANDOM%2))
@@ -33,12 +34,27 @@ function dailyPlay()
 				((loose++))
 			fi
 		done
-		dictWinloose[$i]=$win" "$loose
-		echo "day$i" "$stake"
+
+		totalwin=$win
+		totalloose=$loose
+		difference=$(($win - $loose))
+		dictWinloose[$i]=$difference 
+      if [[ $difference -eq 50 ]]
+      then
+        echo "day$i"  $difference
+      else
+        echo "day$i"  $difference
+      fi
 	done
-		echo "Win count"  $win
-		echo "Loose count"  $loose
+
+echo "Total Win" $totalwin
+echo "Total loose" $totalloose
 
 }
 
+main()
+{
 dailyPlay
+}
+
+main
