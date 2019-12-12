@@ -13,7 +13,7 @@ function gamblerPlay()
 		win=0
 		loose=0
 		stake=100
-	    	lowerLimit=$(( $stake / 2 ))
+	   lowerLimit=$(( $stake / 2 ))
 		upperLimit=$(( $stake + $stake / 2 ))
 		while (( $lowerLimit < $stake && $upperLimit > $stake ))
 		do
@@ -30,13 +30,15 @@ function gamblerPlay()
 		winLooseDifference=$(($win - $loose))
 		totalDiff=$(($totalDiff + $winLooseDifference ))
 		dictWinloose[$i]="$winLooseDifference  $totalDiff"
-	done
+done
+
 }
 
 function nextMonth()
 {
-	if [ $winLooseDifference -gt 0 ]
+	if [ $totalDiff -gt 0 ]
 	then
+		echo "----------------------------------"
 		main
 	else
 		echo "No Money Left"
@@ -49,7 +51,6 @@ function luckiest()
 	for (( i=1; i<=30; i++ ))
 	do
 		echo "day$i" ${dictWinloose[$i]}
-
 	done | sort -rn -k3 | head -1 
 }
 
@@ -59,16 +60,16 @@ function unluckiest()
 	for (( j=1; j<=30; j++ ))
 	do
 		echo "day$j" ${dictWinloose[$j]}
-
 	done | sort -k3 -n | head -1
 }
 
 function main()
 {
-gamblerPlay
-luckiest
-unluckiest
-nextMonth
+	gamblerPlay
+	luckiest
+	unluckiest
+	echo "Total Earn" $totalDiff
+	nextMonth
 }
 
 main
