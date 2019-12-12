@@ -1,4 +1,4 @@
-==#!/bin/bash -x
+#!/bin/bash -x
 
 echo "Welcome : To Gambler Simulator "
 
@@ -13,9 +13,9 @@ function gamblerPlay()
 		win=0
 		loose=0
 		stake=100
-    	lowerlimit=$(( $stake / 2 ))
-		upperlimit=$(( $stake + $stake / 2 ))
-		while (( $lowerlimit < $stake && $upperlimit > $stake ))
+	   lowerLimit=$(( $stake / 2 ))
+		upperLimit=$(( $stake + $stake / 2 ))
+		while (( $lowerLimit < $stake && $upperLimit > $stake ))
 		do
 			result=$((RANDOM%2))
 			if [[ $result -eq 1 ]]
@@ -27,21 +27,20 @@ function gamblerPlay()
 				((loose++))
 			fi
 		done
-
-		winlooseDifference=$(($win - $loose))
-		totalDiff=$(($totalDiff + $winlooseDifference ))
-		dictWinloose[$i]="$winlooseDifference  $totalDiff"
-
-	done
+		winLooseDifference=$(($win - $loose))
+		totalDiff=$(($totalDiff + $winLooseDifference ))
+		dictWinloose[$i]="$winLooseDifference  $totalDiff"
+done
 }
 
 function nextMonth()
 {
-	if [ $winlooseDifference -gt 0 ]
+	if [ $winLooseDifference -gt 0 ]
 	then
-			main
+		echo "--------------------------------------"
+		main
 	else
-			echo "No Money Left"
+		echo "No Money Left"
 	fi
 }
 
@@ -50,7 +49,7 @@ function luckiest()
 	echo "luckiest day and amount: "
 	for (( i=1; i<=30; i++ ))
 	do
-			echo "day$i" ${dictWinloose[$i]}
+		echo "day$i" ${dictWinloose[$i]}
 	done | sort -rn -k3 | head -1 
 }
 
@@ -65,10 +64,11 @@ function unluckiest()
 
 function main()
 {
-gamblerPlay
-luckiest
-unluckiest
-nextMonth
+	gamblerPlay
+	luckiest
+	unluckiest
+	echo "Total Earn" $winLooseDifference
+	nextMonth
 }
 
 main
